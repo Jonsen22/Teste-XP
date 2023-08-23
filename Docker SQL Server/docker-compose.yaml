@@ -1,0 +1,22 @@
+version: '2.1'
+services:
+
+  mssqldata:
+    image: 6db3c5ebc3316eee88bf9bdcd0305da702da6da67fda5cf1b8a9da3cd480d98c
+    entrypoint: /bin/bash
+
+  mssql:
+    image: 6db3c5ebc3316eee88bf9bdcd0305da702da6da67fda5cf1b8a9da3cd480d98c
+    ports:
+      - 1433:1433
+    volumes:
+      - /var/opt/mssql
+      - ./:/usr/src/app 
+   
+    working_dir: /usr/src/app 
+    command: sh -c ' chmod +x ./entrypoint.sh; ./entrypoint.sh & /opt/mssql/bin/sqlservr;'
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: XPTest123
+    volumes_from:
+      - mssqldata
